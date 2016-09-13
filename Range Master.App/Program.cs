@@ -29,7 +29,7 @@ namespace Range_Master.App
 
                 // Header Info
 
-                form.SetField($"{field_prefix}.IDCODE[0]", model.IdCode);
+                form.SetField($"{field_prefix}.IDCODE[0]", model.SoldierIdentifier);
                 form.SetField($"{field_prefix}.UNIT[0]", model.Unit);
 
                 form.SetField($"{field_prefix}.DATE[0]", model.Date.ToString("yyyyMMdd"));

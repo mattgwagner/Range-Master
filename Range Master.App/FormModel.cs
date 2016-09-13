@@ -6,7 +6,7 @@ namespace RangeMaster.App
 {
     public class FormModel
     {
-        public String IdCode { get; set; }
+        public String SoldierIdentifier { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Today;
 
