@@ -16,9 +16,6 @@ namespace Range_Master.App
         {
             // Who needs the owner password?
 
-
-            
-
             PdfReader.unethicalreading = true;
 
             var model = new FormModel { };
@@ -114,14 +111,10 @@ namespace Range_Master.App
 
                 // What sight did they use?
 
-                //{field_prefix}.AA[0]
-                //{field_prefix}.EE[0]
-                //{field_prefix}.BB[0]
-                //{field_prefix}.GG[0]
-                //{field_prefix}.CC[0]
-                //{field_prefix}.HH[0]
-                //{field_prefix}.DD[0]
-                //{field_prefix}.FF[0]
+                form.SetField($"{field_prefix}.AA[0]", FromSight(model.Sight)); // Iron Sight
+                form.SetField($"{field_prefix}.BB[0]", FromSight(model.Sight)); // Backup Iron Sight
+                form.SetField($"{field_prefix}.CC[0]", FromSight(model.Sight)); // M68, CCO
+                form.SetField($"{field_prefix}.DD[0]", FromSight(model.Sight)); // ACOG
 
                 // Qualified with IBA?
 
@@ -209,6 +202,33 @@ namespace Range_Master.App
                 case Qualification.Unqualified:
                 default:
                     return "4";
+            }
+        }
+
+        private static String FromSight(Sight sight)
+        {
+            switch (sight)
+            {
+                case Sight.ACOG:
+                    return "4";
+
+                case Sight.CCO:
+                    return "3";
+
+                case Sight.BackupIronSight:
+                    return "2";
+
+                case Sight.IronSight:
+                default:
+                    return "1";
+            }
+        }
+
+        private static void PrintOptions(AcroFields form, String fieldName)
+        {
+            foreach (var state in form.GetAppearanceStates(fieldName))
+            {
+                Console.WriteLine($"State for {fieldName}: " + state);
             }
         }
     }

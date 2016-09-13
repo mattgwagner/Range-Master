@@ -18,6 +18,8 @@ namespace RangeMaster.App
 
         public Boolean QualifiedWithIba { get; set; } = false;
 
+        public Sight Sight { get; set; } = Sight.IronSight;
+
         public ICollection<Target> Table1 { get; set; } = new List<Target>(capacity: 20);
 
         public ICollection<Target> Table2 { get; set; } = new List<Target>(capacity: 10);
@@ -114,5 +116,16 @@ namespace RangeMaster.App
         Sharpshooter = 30,
 
         Expert = 36
+    }
+
+    public enum Sight
+    {
+        IronSight = 1,
+
+        BackupIronSight = 2,
+
+        CCO = 3,
+
+        ACOG = 4
     }
 }
