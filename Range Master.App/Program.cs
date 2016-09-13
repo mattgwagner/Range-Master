@@ -16,19 +16,12 @@ namespace Range_Master.App
         {
             // Who needs the owner password?
 
-            var model = new FormModel { };
 
-            model.Remarks = "Awesome remarks!";
-
-            model.IdCode = "Test Id Code";
-
-            // TODO Miss and NoFire don't register the right checkboxes
-
-            model.Table1 = Enumerable.Range(1, 20).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
-            model.Table2 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
-            model.Table3 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Miss }).ToList();
+            
 
             PdfReader.unethicalreading = true;
+
+            var model = new FormModel { };
 
             using (var output = new FileStream("Output.pdf", FileMode.Create))
             using (var input = Assembly.GetExecutingAssembly().GetManifestResourceStream("RangeMaster.App.DA_3595-R_Record_Fire_Scorecard.pdf"))
