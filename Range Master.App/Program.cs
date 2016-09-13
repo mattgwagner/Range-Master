@@ -24,9 +24,11 @@ namespace Range_Master.App
 
             model.IdCode = "Test Id Code";
 
-            model.Table1 = new[] { new Target { Number = 1, Result = TargetResult.Hit } };
-            model.Table2 = new[] { new Target { Number = 5, Result = TargetResult.Miss } };
-            model.Table3 = new[] { new Target { Number = 10, Result = TargetResult.NoFire } };
+            // TODO Miss and NoFire don't register the right checkboxes
+
+            model.Table1 = Enumerable.Range(1, 20).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
+            model.Table2 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
+            model.Table3 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
 
             PdfReader.unethicalreading = true;
 
@@ -36,11 +38,6 @@ namespace Range_Master.App
             using (var stamper = new PdfStamper(reader, output))
             {
                 var form = stamper.AcroFields;
-
-                foreach (var field in form.Fields)
-                {
-                    Console.WriteLine($"{field.Key}");
-                }
 
                 // Header Info
 
@@ -160,7 +157,19 @@ namespace Range_Master.App
 
             if (target.Number > 1)
             {
-                base_name += $"_{++target.Number}";
+                if ("B".Equals(table))
+                {
+                    // Target 11 does not need a _ prefix since it's the first in column 2
+
+                    if (target.Number > 11)
+                    {
+                        base_name += $"_{--target.Number - 10}";
+                    }
+                }
+                else
+                {
+                    base_name += $"_{--target.Number}";
+                }
             }
 
             // For target 1, there is no _1
