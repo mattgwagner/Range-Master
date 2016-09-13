@@ -18,8 +18,6 @@ namespace Range_Master.App
 
             var model = new FormModel { };
 
-            model.QualifiedWithIba = true;
-
             model.Remarks = "Awesome remarks!";
 
             model.IdCode = "Test Id Code";
@@ -28,7 +26,7 @@ namespace Range_Master.App
 
             model.Table1 = Enumerable.Range(1, 20).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
             model.Table2 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
-            model.Table3 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Hit }).ToList();
+            model.Table3 = Enumerable.Range(1, 10).Select(_ => new Target { Number = _, Result = TargetResult.Miss }).ToList();
 
             PdfReader.unethicalreading = true;
 
@@ -56,7 +54,7 @@ namespace Range_Master.App
 
                 foreach (var target in model.Table1.Where(_ => _.Number < 11))
                 {
-                    form.SetField(GetFieldToSet("A", target), FromBool(true));
+                    form.SetField(GetFieldToSet("A", target), FromResult(target.Result));
                 }
 
                 form.SetField($"{field_prefix}.Total_Hit_Column1[0]", model.Column1_Result.TotalHit.ToString());
@@ -65,7 +63,7 @@ namespace Range_Master.App
 
                 foreach (var target in model.Table1.Where(_ => _.Number > 10))
                 {
-                    form.SetField(GetFieldToSet("B", target), FromBool(true));
+                    form.SetField(GetFieldToSet("B", target), FromResult(target.Result));
                 }
 
                 form.SetField($"{field_prefix}.Total_Hit_Column2[0]", model.Column2_Result.TotalHit.ToString());
@@ -76,7 +74,7 @@ namespace Range_Master.App
 
                 foreach (var target in model.Table2)
                 {
-                    form.SetField(GetFieldToSet("C", target), FromBool(true));
+                    form.SetField(GetFieldToSet("C", target), FromResult(target.Result));
                 }
 
                 form.SetField($"{field_prefix}.Total_Hit_Column3[0]", model.Table2_Result.TotalHit.ToString());
@@ -87,7 +85,7 @@ namespace Range_Master.App
 
                 foreach (var target in model.Table3)
                 {
-                    form.SetField(GetFieldToSet("D", target), FromBool(true));
+                    form.SetField(GetFieldToSet("D", target), FromResult(target.Result));
                 }
 
                 form.SetField($"{field_prefix}.Total_Hit_Column4[0]", model.Table3_Result.TotalHit.ToString());
@@ -116,12 +114,10 @@ namespace Range_Master.App
 
                 form.SetField($"{field_prefix}.Total_Points[0]", model.TotalScore.ToString());
 
-                // TODO These are currently not getting set properly
-
-                form.SetField($"{field_prefix}.Marksman[0]", FromBool(model.Qualification == Qualification.Marksman));
-                form.SetField($"{field_prefix}.Expert[0]", FromBool(model.Qualification == Qualification.Expert));
-                form.SetField($"{field_prefix}.ShrpShot[0]", FromBool(model.Qualification == Qualification.Sharpshooter));
-                form.SetField($"{field_prefix}.Unqualifd[0]", FromBool(model.Qualification == Qualification.Unqualified));
+                form.SetField($"{field_prefix}.Marksman[0]", FromQualification(model.Qualification));
+                form.SetField($"{field_prefix}.Expert[0]", FromQualification(model.Qualification));
+                form.SetField($"{field_prefix}.ShrpShot[0]", FromQualification(model.Qualification));
+                form.SetField($"{field_prefix}.Unqualifd[0]", FromQualification(model.Qualification));
 
                 // What sight did they use?
 
@@ -136,8 +132,8 @@ namespace Range_Master.App
 
                 // Qualified with IBA?
 
-                form.SetField($"{field_prefix}.YES[0]", FromBool(model.QualifiedWithIba));
-                form.SetField($"{field_prefix}.NO[0]", FromBool(!model.QualifiedWithIba));
+                form.SetField($"{field_prefix}.YES[0]", model.QualifiedWithIba ? "1" : String.Empty);
+                form.SetField($"{field_prefix}.NO[0]", model.QualifiedWithIba ? String.Empty : "2");
 
                 // Evaluator Signatures
 
@@ -149,6 +145,8 @@ namespace Range_Master.App
                 //{field_prefix}.signature_BUTTON1[0]
                 //{field_prefix}.signature_BUTTON2[0]
             }
+
+            Console.ReadKey();
         }
 
         private static String GetFieldToSet(String table, Target target)
@@ -184,6 +182,41 @@ namespace Range_Master.App
         private static String FromBool(Boolean result)
         {
             return result ? "1" : "0";
+        }
+
+        private static String FromResult(TargetResult result)
+        {
+            switch (result)
+            {
+                case TargetResult.Hit:
+                    return "1";
+
+                case TargetResult.Miss:
+                    return "2";
+
+                case TargetResult.NoFire:
+                default:
+                    return "3";
+            }
+        }
+
+        private static String FromQualification(Qualification qualification)
+        {
+            switch (qualification)
+            {
+                case Qualification.Expert:
+                    return "1";
+
+                case Qualification.Sharpshooter:
+                    return "2";
+
+                case Qualification.Marksman:
+                    return "1";
+
+                case Qualification.Unqualified:
+                default:
+                    return "4";
+            }
         }
     }
 }
