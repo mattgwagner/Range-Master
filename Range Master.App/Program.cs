@@ -1,7 +1,8 @@
-﻿using LinqToExcel;
+﻿using Excel;
 using RangeMaster.App;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Range_Master.App
@@ -30,46 +31,53 @@ namespace Range_Master.App
 
         public static IEnumerable<FormModel> Read_From_Excel(String filename)
         {
-            var excel = new ExcelQueryFactory(filename);
-
-            foreach (var row in excel.Worksheet("raw").Skip(2))
+            using (var input = new FileStream(filename, FileMode.Open))
             {
-                int current = 0;
+                var excel = ExcelReaderFactory.CreateOpenXmlReader(input);
 
-                var model = new FormModel
-                {
-                    SoldierIdentifier = row[current++],
-                    Unit = row[current++],
-                };
+                var data = excel.AsDataSet();
 
-                foreach (var target in Enumerable.Range(1, 20))
+                var table = data.Tables[0].Rows;
+
+                for (var row = 2; row < table.Count; row++)
                 {
-                    model.Table1.Add(new FormModel.Target
+                    int column = 0;
+
+                    var model = new FormModel
                     {
-                        Number = target,
-                        Result = row[current++].Cast<int>() == 1 ? TargetResult.Hit : TargetResult.Miss
-                    });
-                }
+                        SoldierIdentifier = (String)table[row][column++],
+                        Unit = (String)table[row][column++]
+                    };
 
-                foreach (var target in Enumerable.Range(1, 10))
-                {
-                    model.Table2.Add(new FormModel.Target
+                    foreach (var target in Enumerable.Range(1, 20))
                     {
-                        Number = target,
-                        Result = row[current++].Cast<int>() == 1 ? TargetResult.Hit : TargetResult.Miss
-                    });
-                }
+                        model.Table1.Add(new FormModel.Target
+                        {
+                            Number = target,
+                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                        });
+                    }
 
-                foreach (var target in Enumerable.Range(1, 10))
-                {
-                    model.Table3.Add(new FormModel.Target
+                    foreach (var target in Enumerable.Range(1, 10))
                     {
-                        Number = target,
-                        Result = row[current++].Cast<int>() == 1 ? TargetResult.Hit : TargetResult.Miss
-                    });
-                }
+                        model.Table2.Add(new FormModel.Target
+                        {
+                            Number = target,
+                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                        });
+                    }
 
-                yield return model;
+                    foreach (var target in Enumerable.Range(1, 10))
+                    {
+                        model.Table3.Add(new FormModel.Target
+                        {
+                            Number = target,
+                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                        });
+                    }
+
+                    yield return model;
+                }
             }
         }
     }
