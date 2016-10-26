@@ -1,0 +1,1 @@
+﻿RangeMaster.App.exe "%~1"
