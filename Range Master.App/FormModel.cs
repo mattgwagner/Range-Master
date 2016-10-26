@@ -294,7 +294,7 @@ namespace RangeMaster.App
                     return "2";
 
                 case Qualification.Marksman:
-                    return "1";
+                    return "3";
 
                 case Qualification.Unqualified:
                 default:
