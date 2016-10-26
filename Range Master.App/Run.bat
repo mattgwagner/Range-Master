@@ -1,1 +1,3 @@
-﻿RangeMaster.App.exe "%~1"
+@ECHO OFF
+
+RangeMaster.App.exe "%~1"
