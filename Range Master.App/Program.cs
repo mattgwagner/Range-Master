@@ -45,16 +45,18 @@ namespace Range_Master.App
 
                     var model = new FormModel
                     {
-                        SoldierIdentifier = (String)table[row][column++],
-                        Unit = (String)table[row][column++]
+                        SoldierIdentifier = Convert.ToString(table[row][column++]),
+                        Unit = Convert.ToString(table[row][column++])
                     };
+
+                    if (String.IsNullOrWhiteSpace(model.SoldierIdentifier)) continue;
 
                     foreach (var target in Enumerable.Range(1, 20))
                     {
                         model.Table1.Add(new FormModel.Target
                         {
                             Number = target,
-                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                            Result = Convert.ToInt32(table[row][column++]) == 1 ? TargetResult.Hit : TargetResult.Miss
                         });
                     }
 
@@ -63,7 +65,7 @@ namespace Range_Master.App
                         model.Table2.Add(new FormModel.Target
                         {
                             Number = target,
-                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                            Result = Convert.ToInt32(table[row][column++]) == 1 ? TargetResult.Hit : TargetResult.Miss
                         });
                     }
 
@@ -72,7 +74,7 @@ namespace Range_Master.App
                         model.Table3.Add(new FormModel.Target
                         {
                             Number = target,
-                            Result = (int)table[row][column++] == 1 ? TargetResult.Hit : TargetResult.Miss
+                            Result = Convert.ToInt32(table[row][column++]) == 1 ? TargetResult.Hit : TargetResult.Miss
                         });
                     }
 
