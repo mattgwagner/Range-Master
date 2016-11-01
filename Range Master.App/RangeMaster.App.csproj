@@ -69,6 +69,9 @@
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Run.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Run.bat">
