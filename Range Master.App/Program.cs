@@ -43,9 +43,14 @@ namespace Range_Master.App
                 {
                     int column = 0;
 
+                    String lastName = Convert.ToString(table[row][column++]);
+                    String firstName = Convert.ToString(table[row][column++]);
+                    String middleName = Convert.ToString(table[row][column++]);
+                    String rank = Convert.ToString(table[row][column++]);
+
                     var model = new FormModel
                     {
-                        SoldierIdentifier = Convert.ToString(table[row][column++]),
+                        SoldierIdentifier = $"{rank} {lastName}, {firstName} {middleName}",
                         Unit = Convert.ToString(table[row][column++])
                     };
 
