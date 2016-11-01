@@ -48,13 +48,13 @@ namespace Range_Master.App
                     String middleName = Convert.ToString(table[row][column++]);
                     String rank = Convert.ToString(table[row][column++]);
 
+                    if (String.IsNullOrWhiteSpace(lastName)) continue;
+
                     var model = new FormModel
                     {
                         SoldierIdentifier = $"{rank} {lastName}, {firstName} {middleName}",
                         Unit = Convert.ToString(table[row][column++])
                     };
-
-                    if (String.IsNullOrWhiteSpace(model.SoldierIdentifier)) continue;
 
                     foreach (var target in Enumerable.Range(1, 20))
                     {
