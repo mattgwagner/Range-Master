@@ -55,7 +55,8 @@ namespace Range_Master.App
                     var model = new FormModel
                     {
                         SoldierIdentifier = $"{rank} {lastName}, {firstName} {middleName}",
-                        Unit = Convert.ToString(table[row][column++])
+                        Unit = Convert.ToString(table[row][column++]),
+                        QualifiedWithIba = true
                     };
 
                     foreach (var target in Enumerable.Range(1, 20))
