@@ -22,7 +22,7 @@ namespace RangeMaster.App
         {
             get
             {
-                return $"{Unit}_{SoldierIdentifier}_{Qualification}.pdf".Replace(' ', '_');
+                return $"{Unit}_{SoldierIdentifier}_{TotalScore}.pdf".Replace(' ', '_');
             }
         }
 
