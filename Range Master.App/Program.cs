@@ -41,9 +41,9 @@ namespace Range_Master.App
 
                 for (var row = 2; row < table.Count; row++)
                 {
-                    // Note: Starting at column 1, because column 0 is 'Firing Order' and not displayed on the card
+                    // Note: Starting at column 2, because column 0 is 'Firing Order' and column 1 is 'Lane', neither displayed on the card
 
-                    int column = 1;
+                    int column = 2;
 
                     String lastName = Convert.ToString(table[row][column++]);
                     String firstName = Convert.ToString(table[row][column++]);
